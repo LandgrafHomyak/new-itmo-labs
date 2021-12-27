@@ -1,53 +1,70 @@
-const val databaseSize = 1000
+data class Node(
+    var prev: Node?,
+    var next: Node?,
+    val key: String,
+    val value: Cat
+)
 
-val databaseKeys = Array<String?>(databaseSize) { null }
-val databaseValues = Array<Cat?>(databaseSize) { null }
+var database: Node? = null
 
 fun createRecord(
     name: String,
     color: String,
     age: Int,
-    weight: Int
+    weight: Float
 ): Cat? {
-    for (i in 0 until databaseSize) {
-        if (databaseKeys[i] == null) {
-            databaseKeys[i] = name
-            databaseValues[i] = Cat(
-                name = name,
-                color = color,
-                age = age,
-                weight = weight
-            )
-            return databaseValues[i]!! // проверку !! можно было сделать через локальную переменную
+    var pointer = database
+    while (pointer != null) {
+        if (pointer.key == name) {
+            return null
         }
+        pointer = pointer.next
     }
-    return null
+
+    pointer = Node(
+        prev = null,
+        next = database,
+        key = name,
+        value = Cat(
+            name = name,
+            color = color,
+            age = age,
+            weight = weight
+        )
+    )
+    database?.prev = pointer
+    database = pointer
+
+    return pointer.value
 }
 
 fun readRecord(key: String): Cat? {
-    for (i in 0 until databaseSize) {
-        if (databaseKeys[i] == key) {
-            return databaseValues[i]!! // !! просто для красоты и надёжности, первокурсники могут не додуматься т.к. не получится сделать возвращаемый тип not null
+    var pointer = database
+    while (pointer != null) {
+        if (pointer.key == key) {
+            return pointer.value
         }
+        pointer = pointer.next
     }
     return null
 }
 
 
-fun deleteRecord(key: String) {
-    for (i in 0 until databaseSize) {
-        if (databaseKeys[i] == key) {
-            databaseKeys[i] = null
-            databaseValues[i] = null
+fun deleteRecord(key: String): Cat? {
+    var pointer = database
+    while (pointer != null) {
+        if (pointer.key == key) {
+            return pointer.value
         }
+        pointer = pointer.next
     }
+    return null
 }
 
 fun printAllRecords() {
-    for (i in 0 until databaseSize) {
-        /* if (databaseKeys[i] != null) { printCat(databaseValues[i]!!) } */
-        if (databaseValues[i] != null) {
-            printCat(databaseValues[i]!!) // проверку !! можно было сделать через локальную переменную
-        }
+    var pointer = database
+    while (pointer != null) {
+        printCat(pointer.value)
+        pointer = pointer.next
     }
 }

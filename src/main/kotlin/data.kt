@@ -2,7 +2,7 @@ data class Cat(
     val name: String,
     val color: String,
     val age: Int,
-    val weight: Int
+    val weight: Float
 )
 
 fun printCat(cat: Cat) {
