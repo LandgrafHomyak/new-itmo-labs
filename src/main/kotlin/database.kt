@@ -54,6 +54,11 @@ fun deleteRecord(key: String): Cat? {
     var pointer = database
     while (pointer != null) {
         if (pointer.key == key) {
+            pointer.prev?.next = pointer.next
+            pointer.next?.prev = pointer.prev
+            if (database === pointer) {
+                database = pointer.next
+            }
             return pointer.value
         }
         pointer = pointer.next

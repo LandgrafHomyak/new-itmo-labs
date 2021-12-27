@@ -9,20 +9,35 @@ fun main() {
         val args = splitInput.sliceArray(1 until splitInput.size)
 
         when (command) {
-            "create" -> printCat(
-                createRecord(
+            "create" -> {
+                val result = createRecord(
                     name = args[0],
                     color = args[1],
                     age = args[2].toInt(),
-                    weight = args[3].toInt()
-                )!!
-            )
+                    weight = args[3].toFloat()
+                )
+                if (result != null) {
+                    printCat(result)
+                } else {
+                    println("Create: already exists")
+                }
+            }
 
-            "read" -> printCat(readRecord(key = args[0])!!)
+            "read" -> {
+                val result = readRecord(key = args[0])
+                if (result != null) {
+                    printCat(result)
+                } else {
+                    println("Read: not found")
+                }
+            }
 
             "delete" -> {
-                deleteRecord(key = args[0])
-                println("OK")
+                if (deleteRecord(key = args[0]) != null) {
+                    println("OK")
+                } else {
+                    println("Delete: not found")
+                }
             }
 
             "readall" -> printAllRecords()
