@@ -140,7 +140,7 @@ fun printSelectedRecords(
 }
 */
 
-fun printRecordsByWeight(weight: Float) {
+fun printRecordsWhereWeight(weight: Float) {
     var pointer = database
     while (pointer != null) {
         if (abs(pointer.value.weight - weight) <= epsilon) {

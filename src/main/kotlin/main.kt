@@ -23,6 +23,20 @@ fun main() {
                 }
             }
 
+            "update" -> {
+                val result = updateRecord(
+                    name = args[0],
+                    color = args[1],
+                    age = args[2].toInt(),
+                    weight = args[3].toFloat()
+                )
+                if (result != null) {
+                    printCat(result)
+                } else {
+                    println("Update: not found")
+                }
+            }
+
             "read" -> {
                 val result = readRecord(key = args[0])
                 if (result != null) {
@@ -41,9 +55,22 @@ fun main() {
             }
 
             "readall" -> printAllRecords()
+
+
+            "where" -> {
+                for (arg in args) {
+                    val condition = arg.split("=", limit = 2).toTypedArray()
+                    val field = condition[0]
+                    val value = condition[1].toFloat()
+
+                    when (field) {
+                        "weight" -> {
+                            printRecordsWhereWeight(value)
+                        }
+                    }
+                }
+            }
         }
 
     }
-
-
 }
